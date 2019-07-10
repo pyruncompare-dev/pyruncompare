@@ -14,8 +14,7 @@ from __future__ import (absolute_import, division, print_function,
 
 # System Imports
 import io
-import linecache
-import os
+import json
 import runpy
 import sys
 import threading
@@ -46,12 +45,11 @@ class Tracer(object):
             # record the file name and line number of every trace
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
-            bname = os.path.basename(filename)
             print(
-                "%s(%d): %s" % (
-                    bname, lineno,
-                    linecache.getline(filename, lineno)
-                ), end='',
+                json.dumps({
+                    'filename': filename,
+                    'lineno': lineno,
+                }),
                 file=self.fileobj,
             )
         return self.localtrace
