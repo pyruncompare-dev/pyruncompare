@@ -1,4 +1,4 @@
-"""
+"""\
 Module load handler for execution via python -m pyruncompare.
 
 Usage:
@@ -8,6 +8,7 @@ Usage:
 Options:
     -h --help         Show this screen
     -m <module>       Import and run specified module like python -m
+    -f <file>         Output Log File [default: out.txt]
 """
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
@@ -16,6 +17,8 @@ from __future__ import (absolute_import, division, print_function,
 import io
 import sys
 
+import docopt
+
 from .tracer import Tracer, log_module_run
 
 
@@ -23,17 +26,34 @@ def main():
     """
     Main Command Line entry point
     """
-    args = sys.argv[1:]
-    if len(args) >= 2 and args[0] == '-m':
-        modulename = args[1]
-        with io.open('out.txt', 'w', encoding='utf-8') as fobj:
+    args = docopt.docopt(
+        __doc__ % {
+            'exename': ''.join(sys.argv[0:1]),
+        }
+    )
+    if args.get('-m'):
+        print(repr(args))
+        modulename = args['-m']
+        outfile = args['-f']
+        with io.open(outfile, 'w', encoding='utf-8') as fobj:
             tracer = Tracer(fobj)
-            log_module_run(tracer, modulename, args[2:])
+            trace_args = args['<args>']
+            if trace_args[:1] == ['--']:
+                del trace_args[:1]
+            log_module_run(tracer, modulename, trace_args)
     else:
         helptxt = __doc__ % {
             'exename': ''.join(sys.argv[0:1]),
         }
         print(
-            'Unknown options: %r\n\n%s' % (args, helptxt), file=sys.stderr
+            'Unknown options: %s\n\n%s' % (
+                ' '.join(sys.argv[1:]),
+                helptxt,
+            ),
+            file=sys.stderr
         )
         sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

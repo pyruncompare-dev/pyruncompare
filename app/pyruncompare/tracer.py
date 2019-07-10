@@ -37,13 +37,14 @@ class Tracer(object):
             # record the file name and line number of every trace
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
-            print(
-                json.dumps({
-                    'filename': filename,
-                    'lineno': lineno,
-                }),
-                file=self.fileobj,
-            )
+            if not self.fileobj.closed:
+                print(
+                    json.dumps({
+                        'filename': filename,
+                        'lineno': lineno,
+                    }),
+                    file=self.fileobj,
+                )
         return self.localtrace
 
 
@@ -65,8 +66,8 @@ def log_module_run(tracer, modulename, args):
     """
     oldargs = list(sys.argv)
     sys.argv = [modulename] + args
-    with run_trace(tracer):
-        try:
+    try:
+        with run_trace(tracer):
             runpy.run_module(modulename, run_name='__main__', alter_sys=True)
-        finally:
-            sys.argv = oldargs
+    finally:
+        sys.argv = oldargs

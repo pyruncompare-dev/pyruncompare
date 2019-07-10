@@ -15,7 +15,7 @@ def test_main_bad_arg():
     from pyruncompare.__main__ import main
     import pytest
     oldargv = sys.argv
-    sys.argv = []
+    sys.argv = [sys.argv[0]]
     try:
         with pytest.raises(SystemExit) as excctxt:
             # Exercise
