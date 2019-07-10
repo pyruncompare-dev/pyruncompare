@@ -14,12 +14,28 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 # System Imports
+import contextlib
 import io
 import sys
 
 import docopt
 
 from .tracer import Tracer, log_module_run
+
+
+def _get_fileout(outfile):
+    """
+    Standard File Output Handler
+    """
+    return io.open(outfile, 'w', encoding='utf-8')
+
+
+@contextlib.contextmanager
+def _get_stdout(outfile):  # pylint: disable=unused-argument
+    """
+    Standard sys.stdout Output Handler
+    """
+    yield sys.stdout
 
 
 def main():
@@ -35,7 +51,11 @@ def main():
         print(repr(args))
         modulename = args['-m']
         outfile = args['-f']
-        with io.open(outfile, 'w', encoding='utf-8') as fobj:
+        if outfile == '-':
+            io_gen = _get_stdout
+        else:
+            io_gen = _get_fileout
+        with io_gen(outfile) as fobj:
             tracer = Tracer(fobj)
             trace_args = args['<args>']
             if trace_args[:1] == ['--']:
