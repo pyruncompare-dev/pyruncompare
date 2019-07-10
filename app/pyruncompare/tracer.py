@@ -23,29 +23,15 @@ class Tracer(object):
         """Handler for call events."""
         if why == 'call':
             filename = frame.f_globals.get('__file__', None)
-            if filename:
-                return self.localtrace
-            else:
-                return None
-        return None
-
-    def localtrace(self, frame, why, arg):  # pylint: disable=unused-argument
-        """
-        Records trace line by line
-        """
-        if why == "line":
-            # record the file name and line number of every trace
-            filename = frame.f_code.co_filename
-            lineno = frame.f_lineno
-            if not self.fileobj.closed:
+            if filename and not self.fileobj.closed:
                 print(
                     json.dumps({
                         'filename': filename,
-                        'lineno': lineno,
+                        'funcname': frame.f_code.co_name,
                     }),
                     file=self.fileobj,
                 )
-        return self.localtrace
+        return None
 
 
 @contextlib.contextmanager
