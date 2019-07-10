@@ -28,10 +28,28 @@ class Tracer(object):
                     json.dumps({
                         'filename': filename,
                         'funcname': frame.f_code.co_name,
+                        'locals': _get_locals(frame),
                     }),
                     file=self.fileobj,
                 )
         return None
+
+
+def _get_locals(frame):
+    """
+    Json compatible locals
+    """
+    return {key: _safe_repr(val) for key, val in frame.f_locals.items()}
+
+
+def _safe_repr(val):
+    """
+    Handle repr issues
+    """
+    try:
+        return repr(val)
+    except AttributeError:
+        return '<no-repr>'
 
 
 @contextlib.contextmanager
