@@ -19,6 +19,17 @@ class Tracer(object):
     def __init__(self, fileobj):
         self.fileobj = fileobj
 
+    @contextlib.contextmanager
+    def run_trace(self):
+        """
+        Context Manager for tracing
+        """
+        sys.settrace(self)
+        threading.settrace(self)
+        yield self
+        sys.settrace(None)
+        threading.settrace(None)
+
     def __call__(self, frame, why, arg):  # pylint: disable=unused-argument
         """Handler for call events."""
         if why == 'call':
@@ -52,18 +63,6 @@ def _safe_repr(val):
         return '<no-repr>'
 
 
-@contextlib.contextmanager
-def run_trace(tracer):
-    """
-    Context Manager for tracing
-    """
-    sys.settrace(tracer)
-    threading.settrace(tracer)
-    yield tracer
-    sys.settrace(None)
-    threading.settrace(None)
-
-
 def log_module_run(tracer, modulename, args):
     """
     Load and run the module like python -m with log dump enabled.
@@ -71,7 +70,7 @@ def log_module_run(tracer, modulename, args):
     oldargs = list(sys.argv)
     sys.argv = [modulename] + args
     try:
-        with run_trace(tracer):
+        with tracer.run_trace():
             runpy.run_module(modulename, run_name='__main__', alter_sys=True)
     finally:
         sys.argv = oldargs
