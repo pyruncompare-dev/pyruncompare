@@ -13,7 +13,7 @@ import sys
 import threading
 
 
-class Tracer(object):
+class Tracer(object):  # pylint: disable=useless-object-inheritance
     """
     Custom Tracer to record execution
     """
@@ -44,7 +44,6 @@ class Tracer(object):
                     }),
                     file=self.fileobj,
                 )
-        return None
 
 
 def _get_locals(frame):
