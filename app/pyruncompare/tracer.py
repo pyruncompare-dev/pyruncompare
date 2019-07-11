@@ -6,6 +6,7 @@ from __future__ import (absolute_import, division, print_function,
 
 import contextlib
 # System Imports
+import inspect
 import json
 import runpy
 import sys
@@ -57,6 +58,8 @@ def _safe_repr(val):
     """
     Handle repr issues
     """
+    if inspect.ismodule(val):
+        return '<module>'
     try:
         return repr(val)
     except AttributeError:
