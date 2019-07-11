@@ -6,7 +6,7 @@ THISDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASEDIR="$( dirname "${THISDIR}" )"
 
 MAIN_MODULE="pyruncompare"
-MODULES=( "${MAIN_MODULE}" "test" )
+MODULES=( "${MAIN_MODULE}" "tests" )
 
 cd "${BASEDIR}/app"
 python -m flake8 "${MODULES[@]}"
