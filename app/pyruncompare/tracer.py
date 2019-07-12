@@ -36,14 +36,14 @@ class Tracer(object):
         if why == 'call':
             filename = frame.f_globals.get('__file__', None)
             if filename and not self.fileobj.closed:
-                print(
+                self.fileobj.write(
                     json.dumps({
                         'filename': filename,
                         'funcname': frame.f_code.co_name,
                         'locals': _get_locals(frame),
                     }),
-                    file=self.fileobj,
                 )
+                self.fileobj.write('\n')
 
 
 def _get_locals(frame):
