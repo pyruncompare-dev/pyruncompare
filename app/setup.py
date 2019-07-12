@@ -24,7 +24,7 @@ def read(fname):
 
 
 setup(
-    name='pyruncompare',
+    name='pymodulenamegoeshere',
     version='0.1.1dev',
     author='Tim Gates',
     author_email='tim.gates@iress.com',
@@ -38,6 +38,7 @@ setup(
         ' for execution variations.'
     ),
     long_description=read('README.md'),
+    long_description_content_type='text/markdown',
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     install_requires=[],
     url='https://github.com/pyruncompare-dev/pyruncompare',
