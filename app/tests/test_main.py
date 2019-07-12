@@ -1,5 +1,4 @@
 """
-<<<<<<< HEAD
 Test modules for pyruncompare __main__
 """
 
@@ -42,20 +41,5 @@ def test_main():
         result = main()  # pylint: disable=assignment-from-no-return
     finally:
         sys.argv = oldargv
-=======
-Test modules for pymodulenamegoeshere __main__
-"""
-
-
-def test_main():
-    """
-    GIVEN the pymodulenamegoeshere.__main__ module entry point WHEN calling
-    main THEN the call executes successfully with a result of `None`
-    """
-    # Setup
-    from pymodulenamegoeshere.__main__ import main
-    # Exercise
-    result = main()  # pylint: disable=assignment-from-no-return
->>>>>>> 07495146bd3251d6588f725e6659fc6bf839dd2a
     # Verify
     assert result is None  # nosec
