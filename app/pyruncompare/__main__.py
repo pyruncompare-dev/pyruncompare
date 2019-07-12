@@ -48,7 +48,6 @@ def main():
         }
     )
     if args.get('-m'):
-        print(repr(args))
         modulename = args['-m']
         outfile = args['-f']
         if outfile == '-':
