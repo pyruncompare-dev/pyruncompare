@@ -24,7 +24,7 @@ def read(fname):
 
 
 setup(
-    name='pymodulenamegoeshere',
+    name='pyruncompare',
     version='0.1.1dev',
     author='Tim Gates',
     author_email='tim.gates@iress.com',
