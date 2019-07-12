@@ -13,7 +13,7 @@ import sys
 import threading
 
 
-class Tracer(object):  # pylint: disable=useless-object-inheritance
+class Tracer(object):
     """
     Custom Tracer to record execution
     """
