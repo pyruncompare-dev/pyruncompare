@@ -2,6 +2,9 @@
 Test modules for pyruncompare __main__
 """
 
+# External Imports
+import pytest
+
 
 def test_main_bad_arg():
     """
@@ -11,18 +14,23 @@ def test_main_bad_arg():
     """
     # Setup
     from pyruncompare.__main__ import main
-    from unittest import mock
+    import mock
     fake_docopt = mock.patch(
-        'pyruncompare.__main__.docopt', return_value={}
+        'pyruncompare.__main__.docopt', return_value={
+        }
     )
-    with fake_docopt:
+    with fake_docopt, pytest.raises(SystemExit) as excctxt:
         # Exercise
-        result = main()  # pylint: disable=assignment-from-no-return
+        main()
     # Verify
-    assert result is None
+    assert excctxt.value.args[0] == 1  # nosec
 
 
-def test_main():
+@pytest.mark.parametrize('filename,expected', [
+    ('out.txt', None),
+    ('-', None),
+])
+def test_main(filename, expected):
     """
     GIVEN the pyruncompare.__main__ module entry point WHEN calling main with
     the arguments -m demo THEN the call executes successfully with a result of
@@ -30,14 +38,16 @@ def test_main():
     """
     # Setup
     from pyruncompare.__main__ import main
-    from unittest import mock
+    import mock
     fake_docopt = mock.patch(
         'pyruncompare.__main__.docopt', return_value={
-            '-m': 'pyruncompare.demo'
+            '-f': filename,
+            '-m': 'pyruncompare.demo',
+            '<args>': ['--'],
         }
     )
     with fake_docopt:
         # Exercise
         result = main()  # pylint: disable=assignment-from-no-return
     # Verify
-    assert result is None
+    assert result == expected  # nosec
