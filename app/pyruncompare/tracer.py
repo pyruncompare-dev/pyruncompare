@@ -4,13 +4,16 @@ Support for running python traces
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import contextlib
 # System Imports
+import contextlib
 import inspect
 import json
 import runpy
 import sys
 import threading
+
+# External Imports
+import six
 
 
 class Tracer(object):
@@ -36,14 +39,14 @@ class Tracer(object):
         if why == 'call':
             filename = frame.f_globals.get('__file__', None)
             if filename and not self.fileobj.closed:
-                self.fileobj.write(
-                    json.dumps({
+                print(
+                    six.u(json.dumps({
                         'filename': filename,
                         'funcname': frame.f_code.co_name,
                         'locals': _get_locals(frame),
-                    }),
+                    })),
+                    file=self.fileobj,
                 )
-                self.fileobj.write('\n')
 
 
 def _get_locals(frame):
