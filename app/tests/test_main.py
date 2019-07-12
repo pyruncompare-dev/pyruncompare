@@ -2,9 +2,6 @@
 Test modules for pyruncompare __main__
 """
 
-# System Imports
-import sys
-
 # External Imports
 import pytest
 
@@ -17,14 +14,14 @@ def test_main_bad_arg():
     """
     # Setup
     from pyruncompare.__main__ import main
-    oldargv = sys.argv
-    sys.argv = [sys.argv[0]]
-    try:
-        with pytest.raises(SystemExit) as excctxt:
-            # Exercise
-            main()  # pylint: disable=assignment-from-no-return
-    finally:
-        sys.argv = oldargv
+    import mock
+    fake_docopt = mock.patch(
+        'pyruncompare.__main__.docopt', return_value={
+        }
+    )
+    with fake_docopt, pytest.raises(SystemExit) as excctxt:
+        # Exercise
+        main()
     # Verify
     assert excctxt.value.args[0] == 1  # nosec
 
@@ -41,12 +38,16 @@ def test_main(filename, expected):
     """
     # Setup
     from pyruncompare.__main__ import main
-    oldargv = sys.argv
-    sys.argv = [sys.argv[0], '-f', filename, '-m', 'pyruncompare.demo', '--']
-    try:
+    import mock
+    fake_docopt = mock.patch(
+        'pyruncompare.__main__.docopt', return_value={
+            '-f': filename,
+            '-m': 'pyruncompare.demo',
+            '<args>': ['--'],
+        }
+    )
+    with fake_docopt:
         # Exercise
         result = main()  # pylint: disable=assignment-from-no-return
-    finally:
-        sys.argv = oldargv
     # Verify
     assert result == expected  # nosec

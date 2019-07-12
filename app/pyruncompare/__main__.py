@@ -18,7 +18,7 @@ import contextlib
 import io
 import sys
 
-import docopt
+from docopt import docopt
 
 from .tracer import Tracer, log_module_run
 
@@ -42,7 +42,7 @@ def main():
     """
     Main Command Line entry point
     """
-    args = docopt.docopt(
+    args = docopt(
         __doc__ % {
             'exename': ''.join(sys.argv[0:1]),
         }
