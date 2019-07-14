@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Setuptool Distribution for pyruncompare
+`setuptools` Distribution for pyruncompare
 """
 
 # {{{ Import
