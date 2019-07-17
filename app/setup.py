@@ -4,47 +4,77 @@
 `setuptools` Distribution for pyruncompare
 """
 
-# {{{ Import
 # System  Imports
 import codecs
 import os
+import re
 
 # External Imports
 from setuptools import setup
 
-# }}}
+PACKAGE_NAME = 'pyruncompare'
 
 
-def read(fname):
+def load_readme(fname):
+    """
+    Read the contents of relative `README` file.
+    """
+    file_path = os.path.join(os.path.dirname(__file__), fname)
+    with codecs.open(file_path, encoding='utf-8') as fobj:
+        sub = (
+            '(https://github.com/'
+            'pyruncompare-dev/pyruncompare'
+            '/blob/master/\\g<1>)'
+        )
+        markdown_fixed = re.sub(
+            '[(]([^)]*[.](?:md|rst))[)]',
+            sub,
+            fobj.read(),
+        )
+        rst_fixed = re.sub(
+            '^[.][.] [_][`][^`]*[`][:] ([^)]*[.](?:md|rst))',
+            sub,
+            markdown_fixed
+        )
+        return rst_fixed
+
+
+def read_version():
     """
     Read the contents of relative file.
     """
-    file_path = os.path.join(os.path.dirname(__file__), fname)
-    return codecs.open(file_path, encoding='utf-8').read()
+    file_path = os.path.join(
+        os.path.dirname(__file__), PACKAGE_NAME, 'version.py'
+    )
+    regex = re.compile('__version__ = [\'\"]([^\'\"]*)[\'\"]')
+    with codecs.open(file_path, encoding='utf-8') as fobj:
+        for line in fobj:
+            mobj = regex.match(line)
+            if mobj:
+                return mobj.group(1)
+    raise Exception('Failed to read version')
 
 
 setup(
-    name='pyruncompare',
-    version='0.1.1dev',
+    name=PACKAGE_NAME,
+    version=read_version(),
     author='Tim Gates',
     author_email='tim.gates@iress.com',
     maintainer='Tim Gates',
     maintainer_email='tim.gates@iress.com',
-    packages=['pyruncompare'],
+    packages=[PACKAGE_NAME],
     license='GPLv3+',
     description=(
-        'Execute a python module or function and log all'
-        ' calls and locals to formats that can be compared'
-        ' for execution variations.'
+        'Execute a python module or function and log all calls and'
+        ' locals to formats that can be compared for execution variations.'
     ),
-    long_description=read('README.md'),
+    long_description=load_readme('README.md'),
     long_description_content_type='text/markdown',
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     install_requires=[],
     url='https://github.com/pyruncompare-dev/pyruncompare',
     classifiers=[
         'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
