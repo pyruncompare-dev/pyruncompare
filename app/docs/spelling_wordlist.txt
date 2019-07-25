@@ -1,3 +1,10 @@
+args
+exename
+Json
 nosec
 pylint
 pyruncompare
+repr
+stdout
+sys
+txt
