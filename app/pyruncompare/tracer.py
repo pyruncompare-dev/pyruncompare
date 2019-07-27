@@ -28,10 +28,10 @@ class Tracer(object):
         """
         Context Manager for tracing
         """
-        sys.settrace(self)
+        sys.settrace(self)  # noqa: DUO111
         threading.settrace(self)
         yield self
-        sys.settrace(None)
+        sys.settrace(None)  # noqa: DUO111
         threading.settrace(None)
 
     def __call__(self, frame, why, arg):  # pylint: disable=unused-argument
