@@ -11,6 +11,9 @@
 
 Execute a python module or function and log all calls and locals to formats that can be compared for execution variations.
 
+More details can be found in the
+[Online Documentation.](https://pyruncompare.readthedocs.io/en/latest/)
+
 # Installation
 
 You can install pyruncompare for
@@ -49,10 +52,13 @@ contributions receive appropriate recognition.
 # License
 
 
+Distributed under the terms of the [GPLv3](https://opensource.org/licenses/GPL-3.0)
+license, "pyruncompare" is free and open source software
+
 
 # Issues
 
-If you encounter any problems, please 
+If you encounter any problems, please
 [file an issue](https://github.com/pyruncompare-dev/pyruncompare/issues)
 along with a detailed description.
 
