@@ -2,7 +2,7 @@
 
 [![Azure Status](https://dev.azure.com/timgates/timgates/_apis/build/status/pyruncompare-dev.pyruncompare?branchName=master)](https://dev.azure.com/timgates/timgates/_build/latest?definitionId=5&branchName=master)
 [![Travis Status](https://travis-ci.org/pyruncompare-dev/pyruncompare.svg?branch=master)](https://travis-ci.org/pyruncompare-dev/pyruncompare)
-[![Appveyor Status](https://ci.appveyor.com/api/projects/status/github/pyruncompare-dev/pyruncompare/branch/master?svg=true)](https://ci.appveyor.com/project/pyruncompare-dev/pyruncompare)
+[![Appveyor Status](https://ci.appveyor.com/api/projects/status/h9552855me50ha76/branch/master?svg=true)](https://ci.appveyor.com/project/timgates42/pyruncompare)
 [![PyPI version](https://img.shields.io/pypi/v/pyruncompare.svg)](https://pypi.org/project/pyruncompare)
 [![Python Versions](https://img.shields.io/pypi/pyversions/pyruncompare.svg)](https://pypi.org/project/pyruncompare)
 [![PyPI downloads per month](https://img.shields.io/pypi/dm/pyruncompare.svg)](https://pypi.org/project/pyruncompare)
