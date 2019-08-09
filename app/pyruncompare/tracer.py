@@ -6,7 +6,6 @@ from __future__ import (absolute_import, division, print_function,
 
 # System Imports
 import contextlib
-import inspect
 import json
 import runpy
 import sys
@@ -60,12 +59,25 @@ def _safe_repr(val):
     """
     Handle repr issues
     """
-    if inspect.ismodule(val):
-        return '<module>'
     try:
-        return repr(val)
-    except AttributeError:
-        return '<no-repr>'
+        primitive = not hasattr(val, '__dict__')
+    except ValueError:
+        primitive = False
+    if primitive:
+        if isinstance(val, type('')):
+            if len(val) > 120:
+                val = val[:117] + '...'
+            return repr(val)
+        if isinstance(val, type(b'')):
+            if len(val) > 120:
+                return '<large byte sequence>'
+            return repr(val)
+        oktype = isinstance(val, int)
+        oktype = oktype or isinstance(val, float)
+        oktype = oktype or isinstance(val, bool)
+        if oktype:
+            return repr(val)
+    return '<no-repr>'
 
 
 def log_module_run(tracer, modulename, args):
