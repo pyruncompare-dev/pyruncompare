@@ -1,8 +1,7 @@
 """
 Support for running python traces
 """
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import (absolute_import, division, print_function)
 
 # System Imports
 import contextlib
@@ -19,6 +18,7 @@ class Tracer(object):
     """
     Custom Tracer to record execution
     """
+
     def __init__(self, fileobj):
         self.fileobj = fileobj
 
@@ -35,15 +35,19 @@ class Tracer(object):
 
     def __call__(self, frame, why, arg):  # pylint: disable=unused-argument
         """Handler for call events."""
-        if why == 'call':
-            filename = frame.f_globals.get('__file__', None)
+        if why == "call":
+            filename = frame.f_globals.get("__file__", None)
             if filename and not self.fileobj.closed:
                 print(
-                    six.u(json.dumps({
-                        'filename': filename,
-                        'funcname': frame.f_code.co_name,
-                        'locals': _get_locals(frame),
-                    })),
+                    six.u(
+                        json.dumps(
+                            {
+                                "filename": filename,
+                                "funcname": frame.f_code.co_name,
+                                "locals": _get_locals(frame),
+                            }
+                        )
+                    ),
                     file=self.fileobj,
                 )
 
@@ -60,24 +64,24 @@ def _safe_repr(val):
     Handle repr issues
     """
     try:
-        primitive = not hasattr(val, '__dict__')
+        primitive = not hasattr(val, "__dict__")
     except ValueError:
         primitive = False
     if primitive:
-        if isinstance(val, type('')):
+        if isinstance(val, type("")):
             if len(val) > 120:
-                val = val[:117] + '...'
+                val = val[:117] + "..."
             return repr(val)
-        if isinstance(val, type(b'')):
+        if isinstance(val, type(b"")):
             if len(val) > 120:
-                return '<large byte sequence>'
+                return "<large byte sequence>"
             return repr(val)
         oktype = isinstance(val, int)
         oktype = oktype or isinstance(val, float)
         oktype = oktype or isinstance(val, bool)
         if oktype:
             return repr(val)
-    return '<no-repr>'
+    return "<no-repr>"
 
 
 def log_module_run(tracer, modulename, args):
@@ -88,6 +92,6 @@ def log_module_run(tracer, modulename, args):
     sys.argv = [modulename] + args
     try:
         with tracer.run_trace():
-            runpy.run_module(modulename, run_name='__main__', alter_sys=True)
+            runpy.run_module(modulename, run_name="__main__", alter_sys=True)
     finally:
         sys.argv = oldargs
