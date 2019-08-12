@@ -77,4 +77,4 @@ def test_get_locals():
         "boolean": "True",
         "obj": "<no-repr>",
     }
-    assert result == expect # nosec # noqa S101
+    assert result == expect  # nosec # noqa S101
