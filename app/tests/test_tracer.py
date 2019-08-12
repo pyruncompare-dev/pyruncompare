@@ -38,7 +38,7 @@ def test_basic_trace():
             if data["funcname"] == "_gen":
                 found = True
                 break
-    assert found  # nosec
+    assert found  # nosec # noqa S101
 
 
 def test_get_locals():
@@ -77,4 +77,4 @@ def test_get_locals():
         "boolean": "True",
         "obj": "<no-repr>",
     }
-    assert result == expect
+    assert result == expect # nosec # noqa S101
