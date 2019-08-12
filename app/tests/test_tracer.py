@@ -22,13 +22,11 @@ def test_basic_trace():
     tmpobj = tempfile.NamedTemporaryFile()
     with io.open(tmpobj.name, "w", encoding="utf-8") as fobj:
         tracer = Tracer(fobj)
-        why = 'call'
+        why = "call"
         frame = mock.Mock()
-        frame.f_globals = {
-            '__file__': 'test.py',
-        }
+        frame.f_globals = {"__file__": "test.py"}
         frame.f_locals = {}
-        frame.f_code.co_name = '_gen'
+        frame.f_code.co_name = "_gen"
         arg = mock.Mock()
         # Exercise
         tracer(frame, why, arg)

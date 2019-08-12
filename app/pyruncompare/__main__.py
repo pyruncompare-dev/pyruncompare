@@ -10,8 +10,7 @@ Options:
     -m <module>       Import and run specified module like python -m
     -f <file>         Output Log File [default: out.txt]
 """
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 # System Imports
 import contextlib
@@ -27,7 +26,7 @@ def _get_fileout(outfile):
     """
     Standard File Output Handler
     """
-    return io.open(outfile, 'w', encoding='utf-8')
+    return io.open(outfile, "w", encoding="utf-8")
 
 
 @contextlib.contextmanager
@@ -42,37 +41,28 @@ def main():
     """
     Main Command Line entry point
     """
-    args = docopt(
-        __doc__ % {
-            'exename': ''.join(sys.argv[0:1]),
-        }
-    )
-    if args.get('-m'):
-        modulename = args['-m']
-        outfile = args['-f']
-        if outfile == '-':
+    args = docopt(__doc__ % {"exename": "".join(sys.argv[0:1])})
+    if args.get("-m"):
+        modulename = args["-m"]
+        outfile = args["-f"]
+        if outfile == "-":
             io_gen = _get_stdout
         else:
             io_gen = _get_fileout
         with io_gen(outfile) as fobj:
             tracer = Tracer(fobj)
-            trace_args = args['<args>']
-            if trace_args[:1] == ['--']:
+            trace_args = args["<args>"]
+            if trace_args[:1] == ["--"]:
                 del trace_args[:1]
             log_module_run(tracer, modulename, trace_args)
     else:
-        helptxt = __doc__ % {
-            'exename': ''.join(sys.argv[0:1]),
-        }
+        helptxt = __doc__ % {"exename": "".join(sys.argv[0:1])}
         print(
-            'Unknown options: %s\n\n%s' % (
-                ' '.join(sys.argv[1:]),
-                helptxt,
-            ),
-            file=sys.stderr
+            "Unknown options: %s\n\n%s" % (" ".join(sys.argv[1:]), helptxt),
+            file=sys.stderr,
         )
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
