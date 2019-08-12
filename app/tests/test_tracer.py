@@ -13,19 +13,25 @@ import mock
 def test_basic_trace():
     """
     GIVEN the tracer with a temporary file output WHEN calling run_trace
-    against the demo module THEN the `_gen` method should be located in the
+    against a mocked _gen call THEN the `_gen` method should be located in the
     output.
     """
     # Setup
     from pyruncompare.tracer import Tracer
-    import pyruncompare.demo.__main__
 
     tmpobj = tempfile.NamedTemporaryFile()
     with io.open(tmpobj.name, "w", encoding="utf-8") as fobj:
         tracer = Tracer(fobj)
+        why = 'call'
+        frame = mock.Mock()
+        frame.f_globals = {
+            '__file__': 'test.py',
+        }
+        frame.f_locals = {}
+        frame.f_code.co_name = '_gen'
+        arg = mock.Mock()
         # Exercise
-        with tracer.run_trace():
-            pyruncompare.demo.__main__.main()
+        tracer(frame, why, arg)
     # Verify
     found = False
     with io.open(tmpobj.name, "r", encoding="utf-8") as fobj:

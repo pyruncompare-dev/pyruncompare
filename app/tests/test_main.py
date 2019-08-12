@@ -47,7 +47,7 @@ def test_main(filename, expected):
         }
     )
     fake_trace = mock.patch(
-        'pyruncompare.tracer.log_module_run', return_value=None
+        'pyruncompare.__main__.log_module_run', return_value=None
     )
     with fake_docopt, fake_trace:
         # Exercise
