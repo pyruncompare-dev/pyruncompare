@@ -12,7 +12,7 @@
 
 Execute a python module or function and log all calls and locals to formats that can be compared for execution variations.
 
-This allows programatic inspection looking for common mistakes in the variables, the specific example that inspired this project was looking for python 2to3 issues to do with python byte strings being handled incorrectly. By logging all primitive typed local variables, these could be scanned for the appearance of "b'...." or 'b"....' that signified a string representation of a byte sequence.
+This allows programmatic inspection looking for common mistakes in the variables, the specific example that inspired this project was looking for python 2to3 issues to do with python byte strings being handled incorrectly. By logging all primitive typed local variables, these could be scanned for the appearance of "b'...." or 'b"....' that signified a string representation of a byte sequence.
 
 # Execution
 
