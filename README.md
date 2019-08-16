@@ -12,6 +12,18 @@
 
 Execute a python module or function and log all calls and locals to formats that can be compared for execution variations.
 
+This allows programmatic inspection looking for common mistakes in the variables, the specific example that inspired this project was looking for python 2to3 issues to do with python byte strings being handled incorrectly. By logging all primitive typed local variables, these could be scanned for the appearance of "b'...." or 'b"....' that signified a string representation of a byte sequence.
+
+# Execution
+
+pyruncompare supports a nested module runner system to inject itself into tracing, e.g.
+
+```
+python -m pyruncompare -m cookiecutter
+```
+
+Can be used to trace an execution of the cookiecutter __main__ module execution.
+
 More details can be found in the
 [Online Documentation.](https://pyruncompare.readthedocs.io/en/latest/)
 
